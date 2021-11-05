@@ -2,7 +2,6 @@ const FF = require('fluent-ffmpeg');
 const FFpath = require('@ffmpeg-installer/ffmpeg').path;
 const fs = require('fs');
 
-console.log('PATH TO FFMPEG:', FFpath);
 FF.setFfmpegPath(FFpath);
 
 const convertVideo = (input, output, from, to) => new Promise((resolve, reject) => {

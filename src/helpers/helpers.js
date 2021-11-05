@@ -1,11 +1,13 @@
-const sleep = (duration, message) => {
+const fs = require('fs');
+
+function sleep(duration, message) {
   const start = Date.now();
   let time = 0;
   while (duration - time > 0) {
     time = Date.now() - start;
   }
   console.log(message || 'sleep:', time);
-};
+}
 
 function consoleMethodArg(object, methodName) {
   const originMethod = object[methodName];
@@ -16,7 +18,13 @@ function consoleMethodArg(object, methodName) {
   };
 }
 
+function createDir(dir) {
+  if (fs.existsSync(dir)) return;
+  fs.mkdirSync(dir);
+}
+
 module.exports = {
   sleep,
   consoleMethodArg,
+  createDir,
 };
