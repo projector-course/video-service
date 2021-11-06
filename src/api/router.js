@@ -1,7 +1,7 @@
 const Router = require('@koa/router');
-const { uploadVideo } = require('./controllers/upload_video');
-const { getVideo } = require('./controllers/get_video');
-const { getVideoList } = require('./controllers/get_video_list');
+const { uploadVideo } = require('./controllers/uploadVideo');
+const { getVideo } = require('./controllers/getVideo');
+const { getVideoList } = require('./controllers/getVideoList');
 
 const router = new Router();
 

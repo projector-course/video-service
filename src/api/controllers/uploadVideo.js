@@ -1,6 +1,6 @@
 const fs = require('fs');
 const { v4: createUuid } = require('uuid');
-const { convertVideo } = require('./convert_video');
+const { convertVideo } = require('../../services/convertVideo');
 const { FILE_TYPES, VIDEO_DIR } = require('../../config');
 
 const uploadVideo = (ctx) => {

@@ -1,7 +1,7 @@
 const Koa = require('koa');
 const { PORT, BASE_URL } = require('./config');
 const { router } = require('./api/router');
-const { prepareServer } = require('./api/controllers/prepare_server');
+const { prepareServer } = require('./utils/prepareServer');
 
 prepareServer();
 
