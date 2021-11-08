@@ -1,5 +1,5 @@
 {
-  "name": "projector-course-node",
+  "name": "projector-course-video-service",
   "version": "1.0.0",
   "description": "",
   "main": "index.js",
@@ -10,23 +10,23 @@
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/mykhailo-vaskivnyuk/projector-course.git"
+    "url": "git+https://github.com/projector-course/video-service"
   },
   "author": "Mykhailo Vaskivnyuk",
   "license": "ISC",
   "bugs": {
-    "url": "https://github.com/mykhailo-vaskivnyuk/projector-course/issues"
+    "url": "https://github.com/projector-course/video-service/issues"
   },
-  "homepage": "https://github.com/mykhailo-vaskivnyuk/projector-course#readme",
+  "homepage": "https://github.com/projector-course/video-service#readme",
   "devDependencies": {
-    "eslint": "^8.1.0",
+    "eslint": "^7.32.0",
     "eslint-config-airbnb-base": "^14.2.1",
+    "eslint-plugin-import": "^2.25.2",
     "nodemon": "^2.0.13"
   },
   "dependencies": {
     "@ffmpeg-installer/ffmpeg": "^1.1.0",
     "@koa/router": "^10.1.1",
-    "eslint-plugin-import": "^2.25.2",
     "fluent-ffmpeg": "^2.1.2",
     "koa": "^2.13.4",
     "koa-bodyparser": "^4.3.0",
