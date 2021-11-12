@@ -1,6 +1,7 @@
 const HOST = '127.0.0.1';
 const PORT = 3000;
 const BASE_URL = `http://${HOST}:${PORT}`;
+const SERVICE_NAME = 'VIDEO SERVICE';
 
 const FILE_TYPES = [
   'mp4',
@@ -18,4 +19,5 @@ module.exports = {
   FILE_TYPES,
   CHUNK_SIZE,
   VIDEO_DIR,
+  SERVICE_NAME,
 };
