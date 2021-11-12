@@ -1,8 +1,8 @@
-const packageJson = require('../../../package.json');
+const packageJson = require('../../../../package.json');
 
-const getHealth = async (ctx) => {
+const getHealth = () => {
   const { name, version } = packageJson;
-  ctx.body = {
+  return {
     name,
     version,
   };

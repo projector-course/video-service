@@ -1,15 +1,13 @@
 const Router = require('@koa/router');
-const { uploadVideo } = require('./controllers/uploadVideo');
-const { getVideo } = require('./controllers/getVideo');
-const { getVideoList } = require('./controllers/getVideoList');
-const { getHealth } = require('./controllers/getHealth');
+const { getHealth } = require('./controllers/healthController/getHealth');
+const { videoRouter } = require('./routes/video/videoRouter');
 
 const router = new Router();
 
 router
-  .get('/', getVideoList)
-  .get('/health', getHealth)
-  .post('/upload', uploadVideo)
-  .get('/:video_name', getVideo);
+  .get('/health', async (ctx) => {
+    ctx.body = await getHealth();
+  })
+  .use(videoRouter.routes(), videoRouter.allowedMethods());
 
 module.exports = { router };
