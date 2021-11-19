@@ -1,6 +1,7 @@
 const { getVideo } = require('../../controllers/videoController/getVideo');
 
 const getVideoRoute = async (ctx) => {
+  ctx.log.debug('ROUTE: %s', ctx.path);
   const { params, headers } = ctx;
   const { video_name: videoName } = params;
   const { range } = headers;
