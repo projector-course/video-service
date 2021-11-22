@@ -1,12 +1,12 @@
 const Router = require('@koa/router');
 const { uploadVideoRoute } = require('./uploadVideoRoute');
 const { getVideoRoute } = require('./getVideoRoute');
-const { getVideoList } = require('../../controllers/videoController/getVideoList');
+const { getVideoListRoute } = require('./getVideoListRoute');
 
 const router = new Router();
 
 router
-  .get('/', async (ctx) => { ctx.body = await getVideoList(); })
+  .get('/', getVideoListRoute)
   .post('/upload', uploadVideoRoute)
   .get('/:video_name', getVideoRoute);
 

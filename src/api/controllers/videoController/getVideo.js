@@ -1,5 +1,9 @@
 const fs = require('fs');
-const { CHUNK_SIZE, VIDEO_DIR } = require('../../../config');
+const { CHUNK_SIZE, VIDEO_DIR } = require('../../../services/configService');
+const { getModuleLogger } = require('../../../services/logService');
+
+const logger = getModuleLogger(module);
+logger.debug('CONTROLLER CREATED');
 
 const getVideo = async (videoName, range) => {
   const fileName = `${VIDEO_DIR}/${videoName}`;

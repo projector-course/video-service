@@ -1,4 +1,4 @@
-const { VIDEO_DIR } = require('../config');
+const { VIDEO_DIR } = require('../services/configService');
 const { createDir } = require('./createDir');
 
 function prepareServer() {
