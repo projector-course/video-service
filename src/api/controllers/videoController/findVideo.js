@@ -4,12 +4,13 @@ const { getModuleLogger } = require('../../../services/logService');
 const logger = getModuleLogger(module);
 logger.debug('CONTROLLER CREATED');
 
-async function getVideoList(userId) {
-  const result = await db.videos.findAll({
-    where: { userId },
+const findVideo = async (id) => {
+  const result = await db.videos.findOne({
+    where: { id },
   });
 
-  return result;
-}
+  const { dataValues: video } = result || {};
+  return video;
+};
 
-module.exports = { getVideoList };
+module.exports = { findVideo };

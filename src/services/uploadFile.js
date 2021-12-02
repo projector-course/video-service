@@ -9,6 +9,9 @@ const uploadFile = (fileName, fileSize, readStream) => {
       console.log('UPLOAD START');
     })
     .on('data', (chunk) => { uploadedSize += chunk.length; })
+    .on('abort', () => {
+      throw new Error('UPLOAD ABORTED');
+    })
     .on('end', () => {
       console.log('UPLOAD END');
     })

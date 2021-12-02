@@ -1,14 +1,24 @@
 const fs = require('fs');
 const { CHUNK_SIZE, VIDEO_DIR } = require('../../../services/configService');
+const gateway = require('../../../services/gatewayService');
 const { getModuleLogger } = require('../../../services/logService');
+const { delVideo } = require('./delVideo');
 
 const logger = getModuleLogger(module);
 logger.debug('CONTROLLER CREATED');
 
-const getVideo = async (videoName, range) => {
-  const fileName = `${VIDEO_DIR}/${videoName}`;
+const getVideo = async (user, video, range) => {
+  const { id, filename } = video;
+  const filePath = `${VIDEO_DIR}/${filename}`;
 
-  const stats = await fs.promises.stat(fileName);
+  let stats;
+  try {
+    stats = await fs.promises.stat(filePath);
+    gateway.writeHistory(user.id, id).catch((e) => logger.error(e));
+  } catch (e) {
+    if (e.code === 'ENOENT') delVideo(video).catch((err) => logger.error(err));
+    throw e;
+  }
   const { size: fileSize } = stats;
   const lastByte = fileSize - 1;
 
@@ -20,7 +30,7 @@ const getVideo = async (videoName, range) => {
     if (end > lastByte) end = lastByte;
   }
 
-  const stream = fs.createReadStream(fileName, { start, end })
+  const stream = fs.createReadStream(filePath, { start, end })
     .on('error', (e) => { throw e; });
 
   return {

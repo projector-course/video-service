@@ -18,6 +18,23 @@ const logLevel = NODE_ENV !== STAGE.PRODUCTION && LOG_LEVEL ? LOG_LEVEL : LOGGER
 const { CHUNK_SIZE } = process.env;
 const chunkSize = parseInt(CHUNK_SIZE, 10) || 0;
 
+/* -- db config -- */
+const {
+  DB_NAME, DB_USER, DB_PASSWORD, DB_HOST, DB_PORT,
+} = process.env;
+
+const DB = {
+  database: DB_NAME,
+  username: DB_USER,
+  password: DB_PASSWORD,
+  host: DB_HOST,
+  port: DB_PORT,
+  dialect: 'postgres',
+  define: {
+    freezeTableName: true,
+  },
+};
+
 module.exports = {
   ...process.env,
   ...settings,
@@ -25,4 +42,5 @@ module.exports = {
   LOG_TARGET: logTarget,
   LOG_LEVEL: logLevel,
   CHUNK_SIZE: chunkSize,
+  [NODE_ENV]: DB,
 };
