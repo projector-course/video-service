@@ -5,19 +5,19 @@ const { getModuleLogger } = require('../../../services/logService');
 const logger = getModuleLogger(module);
 logger.debug('CONTROLLER CREATED');
 
-const delVideo = async (video) => {
+async function delVideo(video) {
   const { id, filename } = video;
-  const delCount = await db.videos.destroy({
+  const result = await db.videos.destroy({
     where: { id },
   });
 
-  if (!delCount) return null;
+  if (!result) return result;
 
   fs.unlink(filename, (e) => {
     if (e) logger.error(e);
   });
 
-  return true;
-};
+  return result;
+}
 
 module.exports = { delVideo };

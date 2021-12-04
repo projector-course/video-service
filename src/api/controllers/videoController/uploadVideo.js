@@ -32,8 +32,8 @@ const uploadVideo = async (fileType, fileSize, readStream, user) => {
       throw e;
     });
 
-  await db.videos.create({
-    userId: user.id,
+  return db.videos.create({
+    ...user,
     filename,
   }).catch((error) => {
     fs.unlink(filePath, (e) => {

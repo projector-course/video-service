@@ -7,14 +7,15 @@ const { delVideo } = require('./delVideo');
 const logger = getModuleLogger(module);
 logger.debug('CONTROLLER CREATED');
 
-const getVideo = async (user, video, range) => {
-  const { id, filename } = video;
+async function getVideo(user, video, range) {
+  const { id: videoId, filename } = video;
+  const { userId } = user;
   const filePath = `${VIDEO_DIR}/${filename}`;
 
   let stats;
   try {
     stats = await fs.promises.stat(filePath);
-    gateway.writeHistory(user.id, id).catch((e) => logger.error(e));
+    gateway.writeHistory({ userId, videoId }).catch((e) => logger.warn(e.message));
   } catch (e) {
     if (e.code === 'ENOENT') delVideo(video).catch((err) => logger.error(err));
     throw e;
@@ -36,6 +37,6 @@ const getVideo = async (user, video, range) => {
   return {
     stream, fileSize, start, end,
   };
-};
+}
 
 module.exports = { getVideo };

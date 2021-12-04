@@ -12,10 +12,10 @@ const postVideoRoute = async (ctx) => {
   const fileSize = +size;
   if (!fileSize) ctx.throw(400, 'Wrong File Size');
 
-  await uploadVideo(fileType, fileSize, req, user);
+  const video = await uploadVideo(fileType, fileSize, req, user);
 
   ctx.status = 201;
-  ctx.body = 'FILE UPLOADED';
+  ctx.body = video;
 };
 
 module.exports = { postVideoRoute };
