@@ -1,15 +1,15 @@
 const fs = require('fs');
 const { v4: createUuid } = require('uuid');
-const { convertVideo } = require('../../../services/convertVideo');
+const { getModuleLogger } = require('../../../services/logService');
 const { VIDEO_DIR } = require('../../../services/configService');
 const { uploadFile } = require('../../../services/uploadFile');
-const { getModuleLogger } = require('../../../services/logService');
+const { convertVideo } = require('../../../services/convertVideo');
 const db = require('../../../db/models');
 
 const logger = getModuleLogger(module);
 logger.debug('CONTROLLER CREATED');
 
-const uploadVideo = async (fileType, fileSize, readStream, user) => {
+const uploadVideo = async (fileType, fileSize, readStream, userId) => {
   const uuid = createUuid();
   const filename = `${uuid}.mp4`;
   const tmpFilePath = `${VIDEO_DIR}/tmp/${filename}`;
@@ -33,7 +33,7 @@ const uploadVideo = async (fileType, fileSize, readStream, user) => {
     });
 
   return db.videos.create({
-    ...user,
+    userId,
     filename,
   }).catch((error) => {
     fs.unlink(filePath, (e) => {

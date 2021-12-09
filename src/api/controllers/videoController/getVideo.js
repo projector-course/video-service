@@ -1,25 +1,29 @@
 const fs = require('fs');
+const { getModuleLogger } = require('../../../services/logService');
+const { findVideo } = require('./findVideo');
+const { VERIFICATION_ERROR_TYPE, VerificationError } = require('../../../errors/verificationError');
+const { delVideo } = require('./delVideo');
 const { CHUNK_SIZE, VIDEO_DIR } = require('../../../services/configService');
 const gateway = require('../../../services/gatewayService');
-const { getModuleLogger } = require('../../../services/logService');
-const { delVideo } = require('./delVideo');
 
 const logger = getModuleLogger(module);
 logger.debug('CONTROLLER CREATED');
 
-async function getVideo(user, video, range) {
-  const { id: videoId, filename } = video;
-  const { userId } = user;
+async function getVideo(id, userId, range) {
+  const video = await findVideo({ id });
+  if (!video) throw new VerificationError(VERIFICATION_ERROR_TYPE.NOT_FOUND_ERROR);
+
+  const { filename } = video;
   const filePath = `${VIDEO_DIR}/${filename}`;
 
   let stats;
   try {
     stats = await fs.promises.stat(filePath);
-    gateway.writeHistory({ userId, videoId }).catch((e) => logger.warn(e.message));
   } catch (e) {
-    if (e.code === 'ENOENT') delVideo(video).catch((err) => logger.error(err));
-    throw e;
+    if (e.code !== 'ENOENT') throw e;
+    delVideo(video).catch((err) => logger.error(err));
   }
+
   const { size: fileSize } = stats;
   const lastByte = fileSize - 1;
 
@@ -33,6 +37,8 @@ async function getVideo(user, video, range) {
 
   const stream = fs.createReadStream(filePath, { start, end })
     .on('error', (e) => { throw e; });
+
+  gateway.writeHistory({ userId, videoId: id }).catch((e) => logger.warn(e.message));
 
   return {
     stream, fileSize, start, end,

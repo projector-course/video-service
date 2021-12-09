@@ -11,7 +11,7 @@ const router = new Router({ prefix });
   - POST    /videos ? userId= { data: binary }  => загружаем видео
   - GET     /videos ? userId=                   => получаем все видео пользователя
   - GET     /videos / :id ? userId=             => отмечаем просм. видео поль-ем и запускаем стрим
-  - DELETE  /videos / :id                       => удаляем видео
+  - DELETE  /videos / :id ? userId=             => удаляем видео
 */
 
 router

@@ -1,12 +1,17 @@
 const fs = require('fs');
-const db = require('../../../db/models');
 const { getModuleLogger } = require('../../../services/logService');
+const { findVideo } = require('./findVideo');
+const { VERIFICATION_ERROR_TYPE, VerificationError } = require('../../../errors/verificationError');
+const db = require('../../../db/models');
 
 const logger = getModuleLogger(module);
 logger.debug('CONTROLLER CREATED');
 
-async function delVideo(video) {
-  const { id, filename } = video;
+async function delVideo({ id, userId }) {
+  const video = await findVideo({ id, userId });
+  if (!video) throw new VerificationError(VERIFICATION_ERROR_TYPE.NOT_FOUND_ERROR);
+
+  const { filename } = video;
   const result = await db.videos.destroy({
     where: { id },
   });
