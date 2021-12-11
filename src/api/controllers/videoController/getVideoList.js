@@ -4,9 +4,9 @@ const db = require('../../../db/models');
 const logger = getModuleLogger(module);
 logger.debug('CONTROLLER CREATED');
 
-async function getVideoList({ userId }) {
+async function getVideoList(data) {
   return db.videos.findAll({
-    where: { userId },
+    where: data,
   });
 }
 

@@ -5,19 +5,24 @@ const { getVideo } = require('../../controllers/videoController/getVideo');
 const { getVideoList } = require('../../controllers/videoController/getVideoList');
 const { delVideo } = require('../../controllers/videoController/delVideo');
 const { validate } = require('../../../middlewares/validator');
-const { VerificationError } = require('../../../errors/verificationError');
 
 const router = new Router();
+
+/*
+  - POST    /videos ? userId= { data: binary }  => загружаем видео
+  - GET     /videos ? userId=                   => получаем все видео пользователя
+  - GET     /videos / :id ? userId=             => отмечаем просм. видео поль-ем и запускаем стрим
+  - DELETE  /videos / :id ? userId=             => удаляем видео
+*/
 
 router.post('/', validate.post, async (ctx) => {
   ctx.log.debug('ROUTE: %s', ctx.path);
 
-  const fileType = ctx.is(...FILE_TYPES);
-
   const { req, headers, query: { userId } } = ctx;
   const { 'content-length': size } = headers;
+
+  const fileType = ctx.is(...FILE_TYPES);
   const fileSize = +size;
-  if (!fileSize) ctx.throw(400, 'Wrong File Size');
 
   const video = await uploadVideo(fileType, fileSize, req, userId);
 
@@ -37,12 +42,7 @@ router.get('/:id', validate.get, async (ctx) => {
   const { headers, params: { id }, query: { userId } } = ctx;
   const { range } = headers;
 
-  const videoFile = await getVideo(id, userId, range)
-    .catch((e) => {
-      if (e instanceof VerificationError) ctx.throw(404, 'VIDEO NOT FOUND');
-      if (e.code === 'ENOENT') ctx.throw(404, 'VIDEO NOT FOUND');
-      else throw e;
-    });
+  const videoFile = await getVideo(id, userId, range);
 
   const {
     stream, fileSize, start, end,
@@ -60,14 +60,7 @@ router.delete('/:id', validate.get, async (ctx) => {
   const { path, params: { id }, query: { userId } } = ctx;
   ctx.log.debug('ROUTE: %s', path);
 
-  let result;
-  try {
-    result = await delVideo({ id, userId });
-  } catch (e) {
-    if (!(e instanceof VerificationError)) throw e;
-    ctx.throw(404);
-  }
-
+  const result = await delVideo({ id, userId });
   if (!result) ctx.throw(404);
 
   ctx.body = 'DELETED';

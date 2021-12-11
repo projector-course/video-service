@@ -6,7 +6,10 @@ const validate = {
     const fileType = ctx.is(...FILE_TYPES);
     if (!fileType) ctx.throw(406, 'Not Acceptable');
 
-    const { query } = ctx;
+    const { headers, query } = ctx;
+    const { 'content-length': size } = headers;
+    if (!+size) ctx.throw(400, 'Wrong File Size');
+
     const { error } = userSchema.validate(query);
     if (error) ctx.throw(400, error.message);
 

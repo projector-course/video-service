@@ -1,11 +1,12 @@
 const Koa = require('koa');
 const getParser = require('koa-bodyparser');
-const { PORT, BASE_URL, SERVICE_NAME } = require('./services/configService');
 const { getModuleLogger } = require('./services/logService');
-const { koaLogger } = require('./middlewares/koaLogger');
-const { getMetrics } = require('./middlewares/metrics');
-const { router } = require('./api/router');
 const { prepareServer } = require('./utils/prepareServer');
+const { errorHandler } = require('./middlewares/errorHandler');
+const { getMetrics } = require('./middlewares/metrics');
+const { koaLogger } = require('./middlewares/koaLogger');
+const { router } = require('./api/router');
+const { PORT, BASE_URL, SERVICE_NAME } = require('./services/configService');
 
 const logger = getModuleLogger(module);
 logger.debug('APP CREATED');
@@ -13,12 +14,13 @@ logger.debug('APP CREATED');
 prepareServer();
 
 new Koa()
+  .use(errorHandler)
   .use(getMetrics)
   .use(koaLogger)
   .use(getParser())
   .use(router.routes())
   .use(router.allowedMethods())
-  .on('error', (e) => logger.error(e))
+  .on('error', (e) => logger.fatal(e))
   .listen(PORT, () => logger.info(`${SERVICE_NAME} is running on ${BASE_URL}`));
 
 process.on('unhandledRejection', (e) => {
