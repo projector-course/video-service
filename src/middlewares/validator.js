@@ -1,4 +1,4 @@
-const { userSchema, getVideoSchema } = require('../api/schema');
+const { getVideoSchema } = require('../api/schema');
 const { FILE_TYPES } = require('../services/configService');
 
 const validate = {
@@ -6,29 +6,29 @@ const validate = {
     const fileType = ctx.is(...FILE_TYPES);
     if (!fileType) ctx.throw(406, 'Not Acceptable');
 
-    const { headers, query } = ctx;
+    const { headers } = ctx;
     const { 'content-length': size } = headers;
     if (!+size) ctx.throw(400, 'Wrong File Size');
 
-    const { error } = userSchema.validate(query);
-    if (error) ctx.throw(400, error.message);
+    // const { error } = userSchema.validate(query);
+    // if (error) ctx.throw(400, error.message);
 
     return next();
   },
 
   get: (ctx, next) => {
-    const { params, query } = ctx;
-    const { error } = getVideoSchema.validate({ ...params, ...query });
+    const { params } = ctx;
+    const { error } = getVideoSchema.validate(params);
     if (error) ctx.throw(400, error.message);
     return next();
   },
 
-  getList: async (ctx, next) => {
-    const { query } = ctx;
-    const { error } = userSchema.validate(query);
-    if (error) ctx.throw(400, error.message);
-    await next();
-  },
+  // getList: async (ctx, next) => {
+  //   const { query } = ctx;
+  //   const { error } = userSchema.validate(query);
+  //   if (error) ctx.throw(400, error.message);
+  //   await next();
+  // },
 };
 
 module.exports = { validate };
