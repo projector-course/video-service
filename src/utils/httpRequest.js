@@ -22,12 +22,12 @@ function checkJson(reqPromise) {
     });
 }
 
-function get(url) {
-  return checkJson(axios.get(url));
+function get(url, options) {
+  return checkJson(axios.get(url, options));
 }
 
-function post(url, data) {
-  return checkJson(axios.post(url, data));
+function post(url, data, options) {
+  return checkJson(axios.post(url, data, options));
 }
 
 module.exports = { get, post };
