@@ -1,5 +1,5 @@
 const { getModuleLogger } = require('./logService');
-const { GATEWAY_URL, GATEWAY_TOKEN } = require('./configService');
+const { GATEWAY_URL, SERVICE_KEY } = require('./configService');
 const { post } = require('../utils/httpRequest');
 
 const logger = getModuleLogger(module);
@@ -7,7 +7,7 @@ logger.debug('SERVICE CREATED');
 
 async function writeHistory(history) {
   const url = `${GATEWAY_URL}/history`;
-  const headers = { 'x-service-token': GATEWAY_TOKEN };
+  const headers = { 'x-service-key': SERVICE_KEY };
   return post(url, history, { headers });
 }
 
