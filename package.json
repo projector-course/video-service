@@ -6,7 +6,8 @@
   "scripts": {
     "start": "nodemon src",
     "test": "echo \"Error: no test specified\" && exit 1",
-    "debug": "nodemon --inspect src"
+    "debug": "nodemon --inspect src",
+    "token": "node src/utils/generateToken.js"
   },
   "repository": {
     "type": "git",
@@ -31,6 +32,7 @@
     "dotenv-defaults": "^3.0.0",
     "fluent-ffmpeg": "^2.1.2",
     "joi": "^17.5.0",
+    "jsonwebtoken": "^8.5.1",
     "koa": "^2.13.4",
     "koa-bodyparser": "^4.3.0",
     "pg": "^8.7.1",

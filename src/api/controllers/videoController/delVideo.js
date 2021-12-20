@@ -6,7 +6,7 @@ const db = require('../../../db/models');
 const logger = getModuleLogger(module);
 logger.debug('CONTROLLER CREATED');
 
-async function delVideo({ id, userId }) {
+async function delVideo(id, userId) {
   const video = await findVideo({ id, userId });
 
   const { filename } = video;

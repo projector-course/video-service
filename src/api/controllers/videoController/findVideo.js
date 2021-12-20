@@ -1,6 +1,6 @@
 const { getModuleLogger } = require('../../../services/logService');
 const db = require('../../../db/models');
-const { VERIFICATION_ERROR_TYPE, VerificationError } = require('../../../errors/verificationError');
+const { VideoNotFoundError } = require('../../../errors');
 
 const logger = getModuleLogger(module);
 logger.debug('CONTROLLER CREATED');
@@ -11,9 +11,9 @@ async function findVideo(data) {
   });
 
   const { dataValues: video } = result || {};
-  if (video) return video;
+  if (!video) throw new VideoNotFoundError();
 
-  throw new VerificationError(VERIFICATION_ERROR_TYPE.NOT_FOUND_ERROR, 'VIDEO NOT FOUND');
+  return video;
 }
 
 module.exports = { findVideo };

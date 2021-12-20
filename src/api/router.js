@@ -8,10 +8,10 @@ const router = new Router({ prefix });
 /*
   - GET     /videos/health
 
-  - POST    /videos ? userId= { data: binary }  => загружаем видео
-  - GET     /videos ? userId=                   => получаем все видео пользователя
-  - GET     /videos / :id ? userId=             => отмечаем просм. видео поль-ем и запускаем стрим
-  - DELETE  /videos / :id ? userId=             => удаляем видео
+  - POST    /videos { data: binary }  => загружаем видео
+  - GET     /videos                   => получаем все видео пользователя
+  - GET     /videos / :id             => отмечаем просм. видео поль-ем и запускаем стрим
+  - DELETE  /videos / :id             => удаляем видео
 */
 
 router
