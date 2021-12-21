@@ -3,7 +3,7 @@ const { getModuleLogger } = require('../../../services/logService');
 const { findVideo } = require('./findVideo');
 const { delVideo } = require('./delVideo');
 const { CHUNK_SIZE, VIDEO_DIR } = require('../../../services/configService');
-const gateway = require('../../../services/gatewayService');
+const amqp = require('../../../services/amqp');
 
 const logger = getModuleLogger(module);
 logger.debug('CONTROLLER CREATED');
@@ -36,7 +36,7 @@ async function getVideo(id, userId, range) {
   const stream = fs.createReadStream(filePath, { start, end })
     .on('error', (e) => { throw e; });
 
-  gateway.writeHistory({ userId, videoId: id }).catch((e) => logger.warn(e.message));
+  amqp.publish({ userId, videoId: id }).catch((e) => logger.error(e));
 
   return {
     stream, fileSize, start, end,
