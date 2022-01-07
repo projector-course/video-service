@@ -10,9 +10,6 @@ const validate = {
     const { 'content-length': size } = headers;
     if (!+size) ctx.throw(400, 'Wrong File Size');
 
-    // const { error } = userSchema.validate(query);
-    // if (error) ctx.throw(400, error.message);
-
     return next();
   },
 
@@ -22,13 +19,6 @@ const validate = {
     if (error) ctx.throw(400, error.message);
     return next();
   },
-
-  // getList: async (ctx, next) => {
-  //   const { query } = ctx;
-  //   const { error } = userSchema.validate(query);
-  //   if (error) ctx.throw(400, error.message);
-  //   await next();
-  // },
 };
 
 module.exports = { validate };

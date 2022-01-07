@@ -23,10 +23,13 @@ const LOGGER_TARGET = {
   STDOUT: 'stdout',
 };
 
+const AMQP_EXCHANGE_TYPE = 'direct';
+
 module.exports = {
   FILE_TYPES,
   VIDEO_DIR,
   STAGE,
   LOGGER_LEVEL,
   LOGGER_TARGET,
+  AMQP_EXCHANGE_TYPE,
 };
